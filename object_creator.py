@@ -29,4 +29,3 @@ def func_to_create_object(n:int,low_range:int,high_range:int,z=True)->np.array:
     rqd_array=np.stack((x_range,y_range),axis=1) # Stacking the x & y arrays only
 
   return rqd_array
-func_to_create_object(200,10,200)
