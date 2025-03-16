@@ -7,6 +7,28 @@ import plotly.graph_objects as go
 import plotly.express as px
 # Creating the numpy array of 2D or 3D shape
 object_to_plot=func_to_create_object(1000,-100,100,True)
+
+
+def noise_addition(array_to_distort:np.ndarray)->np.ndarray: 
+
+  # Extracting the shape of the array that we need to distort
+  rqd_shape=array_to_distort.shape
+
+  # Creating some noise :) 
+  noise=np.random.normal(1,10,rqd_shape)
+
+  # Adding the noise in the parent array
+  distored_array=array_to_distort+noise
+
+  # scaling the array for further distorting it
+  scaling=np.array([1.2,0.75,15]) 
+
+# Adding the scaling in the distorted array
+  distored_array=distored_array*scaling
+
+  return distored_array
+
+
 def plot_graph(points:np.ndarray)->None:
   """
   This function will plot the 2D or 3D array
@@ -52,6 +74,9 @@ def plot_graph(points:np.ndarray)->None:
     #Updating the layout
     fig.update_layout(title='3D Plot',scene=dict(xaxis_title='X_Axis',yaxis_title='Y_Axis',zaxis_title='Z_Axis')) # Adding labels to the graph
     fig.show()
-  
-#Plotting the graph
+
+# Distorting & scaling the object to be plotted
+object_to_plot=noise_addition(object_to_plot)
+
+# Plotting the graph
 plot_graph(object_to_plot)
