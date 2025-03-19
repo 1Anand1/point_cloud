@@ -14,9 +14,16 @@ def bezier_curve(points:np.ndarray)->None:
   z_points=points[:,2]
 
   n=len(points)
-  t=np.linspace(0,1,100)
-  x=[(comb(n,i) for i in range(points.shape[0]+1))]
+  t_list=np.linspace(0,1,100)
 
-  return x
+  terms=[((1-t)**(n-i)*t**i*comb(n,i) ) for i in range(n+1) for t in t_list]
 
+
+  return terms
+
+# Defining a function to create a Bezier Curve
+# def bezier_curve(t):
+#   term=comb(n,i)
+
+# x**3+3*x**2*y+3*x*y**2+y**3
 print(bezier_curve(rand_points))
