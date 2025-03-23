@@ -8,15 +8,27 @@ from math import comb
 rand_points=np.random.randint(10,200,(20,3))
 
 # Defining a function to create a Bezier Curve
-def bezier_curve(points:np.ndarray)->None:
+def bezier_curve(points:np.ndarray,points_on_bezier:int)->None:
+  """
+  This function is used to generate a Bezier Curve in 3D for multiple control points
+
+  *args:
+    points: The control and the fixed points for the Bezier curve are to be specified
+    points_on_bezier : The points on the curve which will created by the binomial equation are to be specified
+
+  returns:
+    None (Produces a graph for the Bezier curve)
+  """
+
+
+
   x_points=points[:,0]
   y_points=points[:,1]
   z_points=points[:,2]
 
   n=len(points)
-  t_list=np.linspace(0,1,100)
+  t_list=np.linspace(0,1,points_on_bezier)
 
-  x_terms=[((1-t)**(n-i)*t**i*comb(n,i)*x_points[i] for i in range(n+1)) for t in t_list]
 
 
   return x_terms
