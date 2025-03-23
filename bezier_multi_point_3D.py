@@ -20,22 +20,21 @@ def bezier_curve(points:np.ndarray,points_on_bezier:int)->None:
     None (Produces a graph for the Bezier curve)
   """
 
-
-
+  # Extracting the points
   x_points=points[:,0]
   y_points=points[:,1]
   z_points=points[:,2]
 
-  n=len(points)
+  # Checking the number of fixed points on the Bezier curve 
+  n=len(points)-1 # This is the degree of the curve 
   t_list=np.linspace(0,1,points_on_bezier)
 
+  x=[sum((comb(n,i))*((1-t)**(n-i))*(t**i)*x_points[i] for i in range(n+1)) for t in t_list]
+  y=[sum((comb(n,i))*((1-t)**(n-i))*(t**i)*y_points[i] for i in range(n+1)) for t in t_list]
+  z=[sum((comb(n,i))*((1-t)**(n-i))*(t**i)*z_points[i] for i in range(n+1)) for t in t_list]
+  
+
+  return np.array(x)
 
 
-  return x_terms
-
-# Defining a function to create a Bezier Curve
-# def bezier_curve(t):
-#   term=comb(n,i)
-
-# x**3+3*x**2*y+3*x*y**2+y**3
-print(bezier_curve(rand_points))
+print(bezier_curve(rand_points,10))
