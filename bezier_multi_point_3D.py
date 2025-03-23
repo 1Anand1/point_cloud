@@ -1,11 +1,10 @@
 # Importing the required libraries
 import numpy as np
 import plotly.graph_objects as go
-import plotly.express as px
 from math import comb
 
 # Generating some random 3D points
-rand_points=np.random.randint(10,200,(20,3))
+rand_points=np.random.randint(10,20,(5,3))
 
 # Defining a function to create a Bezier Curve
 def bezier_curve(points:np.ndarray,points_on_bezier:int)->None:
@@ -34,7 +33,12 @@ def bezier_curve(points:np.ndarray,points_on_bezier:int)->None:
   z=[sum((comb(n,i))*((1-t)**(n-i))*(t**i)*z_points[i] for i in range(n+1)) for t in t_list]
   
 
-  return np.array(x)
+  # Plotting the 3D graph
+  fig=go.Figure()
+  fig.add_trace(go.Scatter3d(x=x,y=y,z=z,mode='lines',name='Bezier Curve'))
+  fig.add_trace(go.Scatter3d(x=x_points,y=y_points,z=z_points,mode='markers',marker=dict(size=5,color='red')))
+  fig.show()
 
 
-print(bezier_curve(rand_points,10))
+
+bezier_curve(rand_points,100)
