@@ -1,13 +1,8 @@
-# Importing the required libraries
 import numpy as np
 import plotly.graph_objects as go
 from math import comb
-
-# Generating some random 3D points
-rand_points=np.random.randint(10,20,(5,3))
-
-# Defining a function to create a Bezier Curve
-def bezier_curve(points:np.ndarray,points_on_bezier:int)->None:
+random_points=np.random.randint(0,10,(4,3))
+def bezier_curve(points:np.array,control_points:int)->None:
   """
   This function is used to generate a Bezier Curve in 3D for multiple control points
 
@@ -18,27 +13,29 @@ def bezier_curve(points:np.ndarray,points_on_bezier:int)->None:
   returns:
     None (Produces a graph for the Bezier curve)
   """
-
-  # Extracting the points
+  # Extracting the coordinates of the points 
   x_points=points[:,0]
   y_points=points[:,1]
   z_points=points[:,2]
 
-  # Checking the number of fixed points on the Bezier curve 
-  n=len(points)-1 # This is the degree of the curve 
-  t_list=np.linspace(0,1,points_on_bezier)
+  # Creating the control points
+  t_list=np.linspace(0,1,control_points)
 
-  x=[sum((comb(n,i))*((1-t)**(n-i))*(t**i)*x_points[i] for i in range(n+1)) for t in t_list]
-  y=[sum((comb(n,i))*((1-t)**(n-i))*(t**i)*y_points[i] for i in range(n+1)) for t in t_list]
-  z=[sum((comb(n,i))*((1-t)**(n-i))*(t**i)*z_points[i] for i in range(n+1)) for t in t_list]
+  # Checking length of the points array & getting the degree of the curve
+  n=len(points) - 1
+
+  # Making Bernstein Basis
+  berstenian_basis=np.array([(comb(n,i))*((1-t_list)**(n-i)*(t_list**i)) for i in range(n+1)]) # Here I did n+1 because the number of points is degree of curve + 1
   
+  # Getting the curve points
+  x_curve=np.dot(berstenian_basis.T , x_points)
+  y_curve=np.dot(berstenian_basis.T , y_points)
+  z_curve=np.dot(berstenian_basis.T , z_points)
 
-  # Plotting the 3D graph
+  # Plotting the curve
   fig=go.Figure()
-  fig.add_trace(go.Scatter3d(x=x,y=y,z=z,mode='lines',name='Bezier Curve'))
-  fig.add_trace(go.Scatter3d(x=x_points,y=y_points,z=z_points,mode='markers',marker=dict(size=5,color='red')))
+  fig.add_trace(go.Scatter3d(x=x_curve,y=y_curve,z=z_curve,mode='lines',name='Bezier Curve'))
+  fig.add_trace(go.Scatter3d(x=x_points,y=y_points,z=z_points,mode='markers',name='Control Points',marker=dict(size=5,color='red')))
   fig.show()
 
-
-
-bezier_curve(rand_points,100)
+bezier_curve(random_points,9999)
